@@ -1,0 +1,45 @@
+﻿@model IEnumerable<pharmsquare_prototype.Models.Drug>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Лекови</h2>
+
+<table id="drugs" class="table">
+    <thead>
+        <tr>
+            <th>
+                Име на лек
+            </th>
+            <th>
+                Цена во МКД (со ДДВ)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.ActionLink("Детали", "Details", new { id = item.ID }, new { @class = "btn btn-info"})
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $("#drugs").dataTable();
+        });
+    </script>
+}

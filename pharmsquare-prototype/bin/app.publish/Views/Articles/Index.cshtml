@@ -1,0 +1,46 @@
+﻿@model IEnumerable<pharmsquare_prototype.Models.Аrticle>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Статии</h2>
+
+<table class="table">
+    <tr>
+        <th></th>
+        <th></th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            <img class="myImg" height="100" width="200" src="@Html.DisplayFor(modelItem => item.ImageURL)"/>
+        </td>
+        <td>
+            <b style="font-size:large">@Html.DisplayFor(modelItem => item.Title)</b>
+            <br />
+            <i style="font-size:smaller">@Html.DisplayFor(modelItem => item.shortText)</i>
+        </td>
+        <td>
+            @Html.ActionLink("Повеќе", "Details", new { id = item.ID }, new { @class = "myButton btn btn-info"})
+        </td>
+    </tr>
+}
+
+</table>
+
+@section Scripts {
+    <script>
+        $(function () {
+            $(".myButton").mouseover(function () {
+                $(this).animate({ fontSize: '+=10' });
+            });
+
+            $(".myButton").mouseout(function () {
+                $(this).animate({ fontSize: '-=10' });
+            });
+        });
+    </script>    
+}

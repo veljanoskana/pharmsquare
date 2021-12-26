@@ -1,0 +1,44 @@
+﻿@model pharmsquare_prototype.Models.Аrticle
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>
+    <b style="font-size:x-large">@Html.DisplayFor(model => model.Title)</b>
+</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dd>
+            <img src="@Html.DisplayFor(model => model.ImageURL)" style="display:block; margin-left:auto; margin-right:auto; width:50%" />
+        </dd>
+
+        <dt style="font-size:x-small">
+            Датум:
+        </dt>
+
+        <dd style="font-size:x-small">
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+
+        <dt style="font-size:x-small">
+            Пишува:
+        </dt>
+
+        <dd style="font-size:x-small">
+            @Html.DisplayFor(model => model.Author)
+        </dd>
+
+        <dt></dt>
+
+        <dd style="text-align:justify">
+            @Html.DisplayFor(model => model.Text)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Назад кон статии", "Index", "Articles", new { @class = "btn btn-default" })
+</p>

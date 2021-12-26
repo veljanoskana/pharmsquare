@@ -1,0 +1,29 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h1>PHARMSQUARE</h1>
+    <p class="lead">На чекор до најблиската аптека.</p>
+    <div class="container">
+        <a href="@Url.Action("Index", "Pharmacies")" class="btn myButton btn-default">Пребарај аптека &raquo;</a>
+        <a href="@Url.Action("Index","Drugs")" class="btn myButton btn-default">Пребарај лек &raquo;</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <h3>Погледни целосен регистар</h3>
+        <p>Оваа апликација ги прикажува дел од аптеките, кои беа возможни да се најдат користејќи го OpenStreet.
+        Подетални информации за сите аптеки на територијата на Република Северна Македонија се достапни на
+        друг, официјален веб сајт.</p>
+        <p><a class="btn btn-default" href="https://lekovi.zdravstvo.gov.mk/pharmacies">Види повеќе &raquo;</a></p>
+    </div>
+    <div class="col-md-6">
+        <h3>Агенција за лекови и медицински средства</h3>
+        <p>
+            Наша визија е да се развиеме во стручно независна, ефикасна, општествено призната и професионална Агенција која може да се споредува со останатите надлежни органи за лекови и медицински средства во регионот и во ЕУ.
+        </p>
+        <p><a class="btn btn-default" href="https://malmed.gov.mk/">Види повеќе &raquo;</a></p>
+    </div>
+</div>

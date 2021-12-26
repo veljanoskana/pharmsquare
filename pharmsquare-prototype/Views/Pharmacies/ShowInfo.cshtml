@@ -1,0 +1,138 @@
+﻿@model pharmsquare_prototype.ViewModels.DetailsViewModel
+
+@{
+    ViewBag.Title = "ShowInfo";
+}
+
+<div>
+    <div class="row">
+        <div class="col-md-6">
+            <h3 style="color: darkgray; font-size:medium;">Информации за</h3>
+            <h2>@Html.DisplayFor(model => model.Pharmacy.Name)</h2>
+        </div>
+        <div class="col-md-6">
+            <!--anchor element za pristap do google maps, se povikuva JS funkcija getLocation-->
+            <a onclick="getLocation()" id="directions" target="_blank" class="btn btn-info pull-right" style="margin-top:20px;"><span class="glyphicon glyphicon-map-marker"></span> Види насоки</a>
+            <small style="display:block; margin-top:65px; text-align:right;"><i>*Почетните координати може да варираат, <br /> во однос на точноста на геолокаторот на прелистувачот.</i></small>
+        </div>
+    </div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            <i>Локација</i>
+        </dt>
+        <dd>
+            @MyMapComponent.AddMap(400, 700, Model.Pharmacy.Latitude, Model.Pharmacy.Longitude, 19)
+        </dd>
+        <dt>
+            Име
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Pharmacy.Name)
+        </dd>
+
+        <dt>
+            Работно време
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Pharmacy.WorkingHours)
+        </dd>
+
+    </dl>
+</div>
+
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        Мислења за аптека
+    </div>
+    <div class="panel-body">
+        @if(Model.Comments != null && Model.Comments.Count > 0)
+        {
+            foreach(var comment in Model.Comments)
+                {
+                    <p>@comment.Text</p>
+                    <small class="text-muted">
+                        Posted by @comment.Author on @comment.Timestamp
+                    </small>
+                    <hr />
+                }
+        }
+        else
+        {
+            <p>Нема коментари за оваа аптека.</p>
+            <hr />
+        }
+
+        <hr />
+        <form id="commentForm" class="panel-footer">
+            <input type="hidden" name="PharmacyID" value="@Model.Pharmacy.ID"/>
+            <div class="form-group">
+                <label>Име</label>
+                <input type="text" class="form-control" name="Name" placeholder="Внеси име тука...">
+            </div>
+            <div class="form-group">
+                <label>Коментар</label>
+                <textarea class="form-control" name="Text" rows="3" placeholder="Напиши коментар тука..."></textarea>
+            </div>
+            <button class="btn btn-success" id="btnComment" type="button">Коментирај</button>
+        </form>
+    </div>
+</div>
+<p>
+    @Html.ActionLink("Назад кон аптеки", "Index", "Home", new { @class = "btn btn-default"})
+</p>
+
+@section Scripts {
+    <script>
+        $("#btnComment").click(function () {
+            $.ajax({
+                url: "@Url.Action("LeaveComment","Comments")",
+                type: "post",
+                data: $("#commentForm").serialize()
+            }).done(function (response) {
+                debugger;
+                if (response.Success) {
+                    window.location.reload();
+                }
+            });
+        });
+
+        // za proverka dali browser poddrzhuva location
+        // ako e uspeshno, dve callback funkcii za success i error
+        function getLocation() {
+            if (navigator.geolocation)
+                navigator.geolocation.getCurrentPosition(showPosition, showError);
+            else
+                document.getElementById("directions").innerHTML = "Geolocation is not supported by this browser.";
+        }
+
+        // pri success, se zimat koordinatite na korisnikot i se menuvat vo url za google maps da otvore so directions
+        // posle toa kako href se stava u anchor elementot od kaj sho e povikana
+        // u nov tap se otvara map_url
+        function showPosition(position) {
+            var destLatitude = position.coords.latitude;
+            var destLongitude = position.coords.longitude;
+            var map_url = "https://www.google.es/maps/dir/'" + destLatitude + "," + destLongitude + "'/'@Model.Pharmacy.Longitude,@Model.Pharmacy.Latitude'/";
+            document.getElementById("directions").setAttribute("href", map_url);
+        }
+
+        // callback za error
+        function showError(error) {
+            if (error.code == 1) {
+                x.innerHTML = "User denied the request for Geolocation."
+            }
+            else if (err.code == 2) {
+                x.innerHTML = "Location information is unavailable."
+            }
+            else if (err.code == 3) {
+                x.innerHTML = "The request to get user location timed out."
+            }
+            else {
+                x.innerHTML = "An unknown error occurred."
+            }
+        }
+    </script>    
+}
